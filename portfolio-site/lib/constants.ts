@@ -80,11 +80,10 @@ export const EXPERIENCES = [
       "Rebuilt and scaled a dormant web development pipeline that had been inactive for nearly 2 years.",
       "Led a $139K B2B website build for a vinyl logistics company with a hard SXSW conference deadline — coordinating cross-functional teams, designing off PDF specs without a design system, and shipping on time.",
       "Architected and maintained 5+ production web applications using Node.js, React, PHP, SQL, and MongoDB.",
-      "Designed automated deployment and scaling systems using Cloudflare, Git, and REST APIs — reducing server downtime by 15% and strengthening security posture.",
       "Established the agency's entire development process from scratch — including design systems, wireframing standards, QA workflows, and technical documentation.",
-      "Led a cross-functional team of 5 engineers, designers, and stakeholders across time zones to ship features on schedule.",
+      "Led a cross-functional team of engineers, designers, and stakeholders across time zones to ship features on schedule.",
       "Implemented analytics dashboards using Looker Studio and GA4, driving a 30% increase in client user engagement.",
-      "Authored 20+ technical documents covering architecture, deployment, and configuration standards in Confluence.",
+      "Authored 20+ technical documents covering architecture, deployment, and configuration standards.",
     ],
   },
   {
