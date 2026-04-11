@@ -167,6 +167,8 @@ function ParticleField() {
     });
 
     const particles = new THREE.Points(geometry, material);
+    // Disable frustum culling to save CPU (all particles are generally visible)
+    particles.frustumCulled = false;
     scene.add(particles);
 
     // Mouse repulsion
@@ -218,6 +220,10 @@ function ParticleField() {
       const posArr = geometry.attributes.position.array as Float32Array;
       const dispArr = geometry.attributes.aDisplacement.array as Float32Array;
 
+      // Optimization: pre-calculate squared radius to avoid expensive Math.sqrt calls
+      const repRadiusSq = REPULSION_RADIUS * REPULSION_RADIUS;
+      let needsBufferUpdate = false;
+
       for (let i = 0; i < COUNT; i++) {
         const i3 = i * 3;
         const ox = originalPositions[i3];
@@ -226,34 +232,75 @@ function ParticleField() {
 
         const dx = posArr[i3] - mouseWorld.x;
         const dy = posArr[i3 + 1] - mouseWorld.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        // Fast distance check without square root
+        const distSq = dx * dx + dy * dy;
 
-        if (dist < REPULSION_RADIUS) {
+        let isActive = false;
+
+        if (distSq < repRadiusSq) {
+          const dist = Math.sqrt(distSq);
+          // Protect against Division by Zero NaN
+          const safeDist = Math.max(dist, 0.0001);
           const force = (REPULSION_RADIUS - dist) / REPULSION_RADIUS;
-          velocities[i3] += (dx / dist) * force * 0.12;
-          velocities[i3 + 1] += (dy / dist) * force * 0.12;
+          velocities[i3] += (dx / safeDist) * force * 0.12;
+          velocities[i3 + 1] += (dy / safeDist) * force * 0.12;
           dispArr[i] = Math.min(1, force * 1.5);
+          isActive = true;
         } else {
-          dispArr[i] *= 0.9;
+          if (dispArr[i] > 0.001) {
+            dispArr[i] *= 0.9;
+            isActive = true;
+          } else if (dispArr[i] !== 0) {
+            dispArr[i] = 0;
+            isActive = true; // Flushes perfect 0 to GPU once
+          }
         }
 
-        // Spring back to original position
-        velocities[i3] += (ox - posArr[i3]) * SPRING;
-        velocities[i3 + 1] += (oy - posArr[i3 + 1]) * SPRING;
-        velocities[i3 + 2] += (oz - posArr[i3 + 2]) * SPRING;
+        // Optimization: Put resting particles to sleep instead of running math endlessly
+        const isDisplaced =
+          Math.abs(ox - posArr[i3]) > 0.001 ||
+          Math.abs(oy - posArr[i3 + 1]) > 0.001 ||
+          Math.abs(oz - posArr[i3 + 2]) > 0.001 ||
+          Math.abs(velocities[i3]) > 0.0001 ||
+          Math.abs(velocities[i3 + 1]) > 0.0001 ||
+          Math.abs(velocities[i3 + 2]) > 0.0001;
 
-        // Damping
-        velocities[i3] *= DAMPING;
-        velocities[i3 + 1] *= DAMPING;
-        velocities[i3 + 2] *= DAMPING;
+        if (isActive || isDisplaced) {
+          // Spring back to original position
+          velocities[i3] += (ox - posArr[i3]) * SPRING;
+          velocities[i3 + 1] += (oy - posArr[i3 + 1]) * SPRING;
+          velocities[i3 + 2] += (oz - posArr[i3 + 2]) * SPRING;
 
-        posArr[i3] += velocities[i3];
-        posArr[i3 + 1] += velocities[i3 + 1];
-        posArr[i3 + 2] += velocities[i3 + 2];
+          // Damping
+          velocities[i3] *= DAMPING;
+          velocities[i3 + 1] *= DAMPING;
+          velocities[i3 + 2] *= DAMPING;
+
+          posArr[i3] += velocities[i3];
+          posArr[i3 + 1] += velocities[i3 + 1];
+          posArr[i3 + 2] += velocities[i3 + 2];
+          
+          needsBufferUpdate = true;
+        } else {
+          // Lock to perfect zero if totally resting
+          if (posArr[i3] !== ox || velocities[i3] !== 0) {
+            posArr[i3] = ox;
+            posArr[i3 + 1] = oy;
+            posArr[i3 + 2] = oz;
+            velocities[i3] = 0;
+            velocities[i3 + 1] = 0;
+            velocities[i3 + 2] = 0;
+            needsBufferUpdate = true;
+          }
+        }
       }
 
-      geometry.attributes.position.needsUpdate = true;
-      geometry.attributes.aDisplacement.needsUpdate = true;
+      // Only push new data to the GPU if particles changed
+      if (needsBufferUpdate) {
+        geometry.attributes.position.needsUpdate = true;
+        geometry.attributes.aDisplacement.needsUpdate = true;
+      }
 
       renderer.render(scene, camera);
     }

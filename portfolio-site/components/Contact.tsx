@@ -192,7 +192,7 @@ export default function Contact() {
             margin: 0,
           }}
         >
-          Built by Jay Boyd · thejayvariable.com · 2025
+          Built by Jay Boyd · thejayvariable.com · 2026
         </p>
       </footer>
     </>
