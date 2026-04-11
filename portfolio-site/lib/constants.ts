@@ -33,7 +33,7 @@ export const PROJECTS = [
     placeholder: "Three.JS",
     description:
       "A 3D mountain climbing roadmap built in Three.JS. Visualizes a learning journey as an interactive terrain you can explore. Custom shaders and scroll-driven camera.",
-    tags: ["Three.JS", "React", "Framer Motion", "GLSL"],
+    tags: ["Three.JS", "React", "Framer Motion"],
     image: "/projects/roadmap.png",
     live: "https://interactive-roadmap-eta.vercel.app",
     github: "https://github.com/JaydenB112",
