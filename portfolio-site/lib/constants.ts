@@ -16,7 +16,7 @@ export const PROJECTS = [
     tags: ["Next.js", "Gemini AI", "Prisma", "PostgreSQL", "Tailwind"],
     image: "/projects/scouthelper.png",
     live: "https://frolicking-sable-2e2893.netlify.app/",
-    github: "https://github.com/JaydenB112",
+    github: "https://github.com/JaydenB112/NFL-Dashboard-Revamp-",
   },
   {
     name: "SchemaGen",
@@ -26,7 +26,7 @@ export const PROJECTS = [
     tags: ["Next.js", "TypeScript", "Auth.js", "Zod", "Supabase"],
     image: "/projects/schemagen.png",
     live: "https://seo-gen-app-cyan.vercel.app",
-    github: "https://github.com/JaydenB112",
+    github: "https://github.com/JaydenB112/SEO-gen-app",
   },
   {
     name: "Interactive Roadmap",
@@ -36,7 +36,7 @@ export const PROJECTS = [
     tags: ["Three.JS", "React", "Framer Motion"],
     image: "/projects/roadmap.png",
     live: "https://interactive-roadmap-eta.vercel.app",
-    github: "https://github.com/JaydenB112",
+    github: "https://github.com/JaydenB112/Interactive-Roadmap ",
   },
   {
     name: "Booth Capture",
@@ -46,7 +46,7 @@ export const PROJECTS = [
     tags: ["React", "Supabase", "Tailwind", "Docker"],
     image: "/projects/boothcapture.png",
     live: "https://roaring-treacle-484e56.netlify.app",
-    github: "https://github.com/JaydenB112",
+    github: "https://github.com/JaydenB112/VES-Project",
   },
 ];
 
