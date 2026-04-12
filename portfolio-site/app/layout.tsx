@@ -35,12 +35,21 @@ export const metadata: Metadata = {
     siteName: "Jay Boyd",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Jay Boyd - Full-Stack Engineer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Jay Boyd — Full-Stack Engineer",
     description:
       "Full-Stack Software Engineer. React, Next.js 15, Three.JS, AI.",
+    images: ["/og-image.png"],
   },
 };
 
