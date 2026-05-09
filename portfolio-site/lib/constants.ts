@@ -7,6 +7,18 @@ export const TYPEWRITER_STRINGS = [
   "Memphis, TN.",
 ];
 
+export const OPEN_SOURCE = [
+  {
+    name: "Firecrawl MCP Server",
+    placeholder: "Open Source",
+    description:
+      "Implemented a 'Response Mode' toggle for the official Firecrawl MCP server. This allows users to switch between full content and metadata-only responses, drastically reducing token consumption and context window overhead in AI-agent workflows.",
+    tags: ["MCP", "TypeScript", "AI Infrastructure", "Open Source"],
+    github: "https://github.com/firecrawl/firecrawl-mcp-server/pull/231",
+    image: "/projects/firecrawl-mcp.png",
+  },
+];
+
 export const PROJECTS = [
   {
     name: "ScoutHelper",
@@ -22,10 +34,10 @@ export const PROJECTS = [
     name: "SchemaGen",
     placeholder: "SEO SaaS",
     description:
-      "SEO schema markup SaaS tool. Generates structured data for any page type, improving search visibility. Full auth, billing-ready architecture.",
+      "The Schema Delivery Network (SDN) for modern SEO teams. Deploy, update, and monitor JSON-LD structured data instantly via a one-line SDK, bypassing developer bottlenecks and CMS limitations.",
     tags: ["Next.js", "TypeScript", "Auth.js", "Zod", "Supabase"],
     image: "/projects/schemagen.png",
-    live: "https://seo-gen-app-cyan.vercel.app",
+    live: "https://schemagen.io",
     github: "https://github.com/JaydenB112/SEO-gen-app",
   },
   {

@@ -1,8 +1,9 @@
 "use client";
 
+import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { PROJECTS } from "@/lib/constants";
+import { PROJECTS, OPEN_SOURCE } from "@/lib/constants";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -17,7 +18,15 @@ function ProjectCard({
   project,
   index,
 }: {
-  project: (typeof PROJECTS)[0];
+  project: {
+    name: string;
+    placeholder: string;
+    description: string;
+    tags: string[];
+    image: string;
+    live?: string;
+    github?: string;
+  };
   index: number;
 }) {
   return (
@@ -36,11 +45,11 @@ function ProjectCard({
         flexDirection: "column",
         transition: "border-color 0.3s ease, box-shadow 0.3s ease",
       }}
-      onMouseEnter={(e) => {
+      onMouseEnter={(e: React.MouseEvent<HTMLElement>) => {
         e.currentTarget.style.borderColor = "rgba(79,142,247,0.4)";
         e.currentTarget.style.boxShadow = "0 0 24px rgba(79,142,247,0.08)";
       }}
-      onMouseLeave={(e) => {
+      onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {
         e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
         e.currentTarget.style.boxShadow = "none";
       }}
@@ -135,38 +144,42 @@ function ProjectCard({
           marginTop: "20px",
         }}
       >
-        <a
-          href={project.live}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            fontFamily: "var(--font-jetbrains-mono)",
-            fontSize: "12px",
-            color: "var(--accent)",
-            textDecoration: "none",
-            transition: "opacity 0.2s ease",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
-          onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-        >
-          Live ↗
-        </a>
-        <a
-          href={project.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            fontFamily: "var(--font-jetbrains-mono)",
-            fontSize: "12px",
-            color: "var(--accent)",
-            textDecoration: "none",
-            transition: "opacity 0.2s ease",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
-          onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-        >
-          GitHub ↗
-        </a>
+        {project.live && (
+          <a
+            href={project.live}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "var(--font-jetbrains-mono)",
+              fontSize: "12px",
+              color: "var(--accent)",
+              textDecoration: "none",
+              transition: "opacity 0.2s ease",
+            }}
+            onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.opacity = "0.7")}
+            onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.opacity = "1")}
+          >
+            Live ↗
+          </a>
+        )}
+        {project.github && (
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "var(--font-jetbrains-mono)",
+              fontSize: "12px",
+              color: "var(--accent)",
+              textDecoration: "none",
+              transition: "opacity 0.2s ease",
+            }}
+            onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.opacity = "0.7")}
+            onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => (e.currentTarget.style.opacity = "1")}
+          >
+            GitHub ↗
+          </a>
+        )}
       </div>
     </motion.article>
   );
@@ -225,10 +238,63 @@ export default function Projects() {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 480px), 1fr))",
           gap: "24px",
+          marginBottom: "120px",
         }}
       >
         {PROJECTS.map((project, i) => (
           <ProjectCard key={project.name} project={project} index={i} />
+        ))}
+      </div>
+
+      {/* Open Source Label */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        style={{
+          fontFamily: "var(--font-jetbrains-mono)",
+          fontSize: "12px",
+          color: "var(--text-muted)",
+          marginBottom: "12px",
+          letterSpacing: "0.05em",
+        }}
+      >
+        {"// 02. community"}
+      </motion.p>
+
+      {/* Open Source Heading */}
+      <motion.h2
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        style={{
+          fontFamily: "var(--font-space-grotesk)",
+          fontWeight: 600,
+          fontSize: "32px",
+          color: "var(--text-primary)",
+          marginBottom: "48px",
+          letterSpacing: "-0.01em",
+        }}
+      >
+        Open Source Contributions
+      </motion.h2>
+
+      {/* Open Source Grid */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 480px), 1fr))",
+          gap: "24px",
+        }}
+      >
+        {OPEN_SOURCE.map((project, i) => (
+          <ProjectCard
+            key={project.name}
+            project={project}
+            index={i + PROJECTS.length}
+          />
         ))}
       </div>
     </section>
