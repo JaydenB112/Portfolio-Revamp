@@ -200,10 +200,11 @@ function ParticleField() {
     window.addEventListener("resize", handleResize);
 
     // Animation loop
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
     function animate() {
       animFrameRef.current = requestAnimationFrame(animate);
-      const elapsed = clock.getElapsedTime();
+      timer.update();
+      const elapsed = timer.getElapsed();
       material.uniforms.uTime.value = elapsed;
 
       // Project mouse to approximate world space at z=0
