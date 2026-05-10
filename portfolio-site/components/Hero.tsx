@@ -122,14 +122,20 @@ function ParticleField() {
     );
     camera.position.z = 5;
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      alpha: true,
-      antialias: false,
-    });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    rendererRef.current = renderer;
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        alpha: true,
+        antialias: false,
+      });
+      renderer.setPixelRatio(Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 2));
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+      rendererRef.current = renderer;
+    } catch (e) {
+      console.warn("WebGL not supported or failed to initialize:", e);
+      return;
+    }
 
     // Particle geometry
     const COUNT = 2800;
@@ -159,7 +165,7 @@ function ParticleField() {
       uniforms: {
         uTime: { value: 0 },
         uMouse: { value: new THREE.Vector2(0, 0) },
-        uPixelRatio: { value: Math.min(devicePixelRatio, 2) },
+        uPixelRatio: { value: Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 2) },
       },
       transparent: true,
       blending: THREE.AdditiveBlending,
@@ -203,9 +209,12 @@ function ParticleField() {
     const timer = new THREE.Timer();
     function animate() {
       animFrameRef.current = requestAnimationFrame(animate);
-      timer.update();
-      const elapsed = timer.getElapsed();
-      material.uniforms.uTime.value = elapsed;
+      
+      if (timer && typeof timer.update === 'function') {
+        timer.update();
+        const elapsed = timer.getElapsed();
+        material.uniforms.uTime.value = elapsed;
+      }
 
       // Project mouse to approximate world space at z=0
       const mouseWorld = new THREE.Vector3(
