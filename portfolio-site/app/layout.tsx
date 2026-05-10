@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, JetBrains_Mono, Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -63,6 +64,13 @@ export default function RootLayout({
       lang="en"
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${inter.variable}`}
     >
+      <head>
+        <Script
+          src="https://schemagen.io/sdk.js"
+          data-client-id="be3e416e-3ee2-4d31-8d29-6dfb1d1d6feb"
+          strategy="afterInteractive"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
