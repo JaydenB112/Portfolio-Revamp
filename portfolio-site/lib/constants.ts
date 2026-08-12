@@ -21,6 +21,15 @@ export const OPEN_SOURCE = [
 
 export const PROJECTS = [
   {
+    name: "Onyx Studio",
+    placeholder: "Full-Stack Studio",
+    description:
+      "Full-stack engineering studio for founders who want senior engineers end to end. Spec-to-production web, API, cloud, and data builds — no account managers, no six-week discovery phase.",
+    tags: ["Next.js", "TypeScript", "Sanity", "Three.JS"],
+    image: "/projects/onyx-studio.png",
+    live: "https://onyxstud.io",
+  },
+  {
     name: "ScoutHelper",
     placeholder: "AI + NFL",
     description:
